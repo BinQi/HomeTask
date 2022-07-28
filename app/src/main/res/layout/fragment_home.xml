@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.hometask.widget.CompoundDrawableEditText
+            android:id="@+id/search"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_search_box"
+            android:drawableStart="@drawable/material_search_icon"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingEnd="15dp"
+            android:gravity="start|center"
+            android:hint="@string/search_tips"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/search_hint_color"
+            android:textSize="14sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+            android:id="@+id/iv_clear_text"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/search"
+            android:src="@drawable/icon_search_clear"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="@id/search"
+            app:layout_constraintTop_toTopOf="@id/search"/>
+
+    <WebView android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+            android:id="@+id/top_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/no_net_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_no_network"
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintBottom_toTopOf="@+id/error_title"
+                android:src="@drawable/icon_stencil_tips_server_error"
+                android:adjustViewBounds="true"
+                android:layout_marginBottom="10dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/error_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/server_error"
+                app:layout_constraintTop_toBottomOf="@+id/img_no_network"
+                app:layout_constraintBottom_toTopOf="@+id/error_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/common_assist_c2"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginBottom="5dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/error_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/error_title"
+                app:layout_constraintBottom_toTopOf="@id/error_try"
+                android:text="@string/server_error_tips_try_again"
+                android:textColor="@color/black_99"
+                android:textStyle="bold"
+                android:textSize="13dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginBottom="20dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/error_try"
+                android:layout_width="80dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toBottomOf="@id/error_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/no_network_retry_2_words"
+                android:textColor="@color/black_60"
+                android:textSize="13dp"
+                android:background="@drawable/bg_no_net_retry_button"
+                android:gravity="center" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

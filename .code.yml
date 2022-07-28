@@ -1,0 +1,8 @@
+# 文档地址： https://git.woa.com/help/menu/instruction/product-docs/code_reviews.html#%E5%8D%95%E6%96%87%E4%BB%B6%E8%AF%84%E5%AE%A1
+file:
+  - path: ".*gradle.*"
+    owners: ["burtlong", "milesxia"]
+    owner_rule: 1
+  - path: "./lib_tavcam/**/*.gradle"
+    owners: ["kerwinstang", "allanzhu", "skymhzhang"]
+    owner_rule: 1

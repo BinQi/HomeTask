@@ -1,0 +1,57 @@
+ext {
+    ver_code = 100
+    build_no = "10"
+    build_front_no = "1.0.0"
+    ver_name = build_front_no + "." + build_no
+    ver_name_qua = build_front_no + "_" + build_no
+    build_mode = "debug"
+    enable_jacoco = getParam('enableJacoco', false).toBoolean()
+    unitTestStableModel = getParam("unitTestStableModel", false).toBoolean()
+
+    //设置jvmArgs -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+    enable_docker_limit = getParam("enableDockerLimit", false).toBoolean()
+    //设置jvmArgs -Xmx
+    max_memory = getParam("xmx", 0).toInteger()
+    //设置testOption maxParallelForks
+    max_parallel_forks = getParam("maxParallelForks", 0).toInteger()
+    //设置testOption forkEvery
+    fork_every = getParam("forkEvery", 0).toInteger()
+    //单测exclude模式,目前仅app生效
+    enableUnitTestExcludeMode =  getParam("enableUnitTestExcludeMode", false).toBoolean()
+    //单测include模式,目前仅app生效
+    enableUnitTestIncludeMode =  getParam("enableUnitTestIncludeMode", false).toBoolean()
+    //单测include模式,目前仅app生效
+    enableUnitTestIncludeExcludeMode = getParam("enableUnitTestIncludeExcludeMode", false).toBoolean()
+    isRenderTestOpen = getParam("isRenderTestOpen", false).toBoolean()
+    run_android_test = getParam('runAndroidTest', false).toBoolean()
+}
+
+//获取指定属性
+def getParam(key, defaultValue) {
+    return project.hasProperty(key) ? project.property(key) :
+            System.getenv(key) != null ? System.getenv(key) : defaultValue
+}
+
+if (hasProperty("VersionCode")) {
+    if (isDigitsOnly(VersionCode)) {
+        println "原 ver_code ${project.ext.ver_code} , 现 ver_code = ${VersionCode}"
+        project.ext.ver_code = VersionCode
+    } else {
+        println "请检查 VersionCode:${VersionCode} 配置字段是否正确"
+    }
+} else {
+    println "no property error"
+}
+
+//用于验证字符串字符是否都是数字
+static def isDigitsOnly(String str) {
+    if (str == null || str.length() == 0) {
+        return false
+    }
+    for (int i = 0; i < str.length(); ++i) {
+        if (!Character.isLetterOrDigit(str.charAt(i))) {
+            return false
+        }
+    }
+    return true
+}

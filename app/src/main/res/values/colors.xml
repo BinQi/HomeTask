@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color_c1">#FEE545</color>
+    <color name="main_color_c2">#0B0E12</color>
+    <color name="main_color_c3">#121314</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black_30">#333333</color>
+    <color name="black_60">#666666</color>
+    <color name="black_99">#999999</color>
+    <color name="dialog_negative">#E8E6E2</color>
+    <color name="dialog_positive">#AC966F</color>
+
+    <color name="profile_edit_color">#ebebeb</color>
+    <color name="common_weak_hint_b9">#FAFAFA</color>
+
+    <color name="search_recent_color">#2E3033</color>
+    <color name="search_hint_color">#979797</color>
+    <color name="common_disable_btn_bg_color_b8">#CCCCCC</color>
+    <color name="common_assist_c2">#0B0E12</color>
+    <color name="light_gray_text_color_a6">#AAAAAA</color>
+    <color name="secondary_color_b5">#F04849</color>
+    <color name="dialog_default_text_color">#141414</color>
+</resources>

@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply from: '../deps.gradle'
+
+android {
+    compileSdkVersion Ver.compile_sdk
+    buildToolsVersion Ver.build_tools
+
+    defaultConfig {
+        applicationId "com.hometask.app"
+        minSdkVersion Ver.min_sdk
+        targetSdkVersion Ver.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility Ver.java
+        targetCompatibility Ver.java
+    }
+    kotlinOptions {
+        jvmTarget = Ver.kotlin_target
+    }
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+
+    implementation Deps.androidx.multidex
+    implementation Deps.androidx.fragment
+    implementation Deps.androidx.appcompat
+    implementation Deps.androidx.material
+    implementation Deps.androidx.constraintlayout
+    implementation Deps.android.room
+    implementation Deps.android.room_ktx
+    implementation Deps.android.lifecycle.viewmodel
+    implementation Deps.android.lifecycle.extensions
+    implementation Deps.android.lifecycle.livedata_ktx
+    implementation Deps.kotlin.stdlib
+
+    implementation Deps.google.gson
+
+    kapt Deps.android.room_compiler
+
+    implementation Deps.glide.core
+    kapt Deps.glide.compiler
+
+    implementation 'io.github.lucksiege:pictureselector:v3.10.5'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

@@ -1,0 +1,5 @@
+ext.Repos = [
+    "https://mirrors.tencent.com/nexus/repository/maven-public" ,
+    "https://plugins.gradle.org/m2/",
+]
+

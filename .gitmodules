@@ -1,0 +1,3 @@
+[submodule "checkstyle"]
+	path = checkstyle
+	url = git@git.code.oa.com:standards/java.git
