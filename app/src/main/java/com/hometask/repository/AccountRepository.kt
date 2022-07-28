@@ -1,5 +1,6 @@
 package com.hometask.repository
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hometask.app.HomeTaskApplication
@@ -7,6 +8,7 @@ import com.hometask.db.AccountDatabase
 import com.hometask.db.entity.AccountEntity
 import com.hometask.ext.toLoggedInUser
 import com.hometask.repository.model.LoggedInUser
+import com.hometask.util.SecurityUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,11 +37,13 @@ object AccountRepository {
         }
     }
 
+    @WorkerThread
     fun login(uid: String, pwd: String): Result<LoggedInUser> {
         val accounts = dao.queryByUid(uid)
-        val targetAccount = accounts.firstOrNull { it.pwSha == pwd }
+        val pwSha = SecurityUtils.sha1Hash(pwd).orEmpty()
+        val targetAccount = accounts.firstOrNull { it.pwSha == pwSha }
         return if (accounts.isEmpty()) {
-            val entity = AccountEntity(uid, pwd, true)
+            val entity = AccountEntity(uid, pwSha, true)
             dao.insert(listOf(entity))
             _accountLiveData.postValue(entity)
             return Result.Success(entity.toLoggedInUser())
@@ -55,6 +59,7 @@ object AccountRepository {
         }
     }
 
+    @WorkerThread
     fun logout() {
         _accountLiveData.value?.let {
             dao.update(it.copy(active = false))
@@ -62,6 +67,7 @@ object AccountRepository {
         }
     }
 
+    @WorkerThread
     fun updateAccount(entity: AccountEntity) {
         _accountLiveData.value?.takeIf {
             it.uid == entity.uid && it != entity
