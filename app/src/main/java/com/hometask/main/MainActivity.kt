@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.hometask.app.BaseActivity
 import com.hometask.app.R
@@ -13,12 +16,18 @@ import com.hometask.main.home.HomeFragment
 import com.hometask.main.home.HomeViewModel
 import com.hometask.main.profile.ProfileFragment
 import com.hometask.main.profile.ProfileViewModel
+import kotlin.math.max
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private val profileViewModel: ProfileViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
-    private val fragments by lazy { listOf(HomeFragment(), ProfileFragment()) }
+    private val fragmentTabs by lazy {
+        listOf(
+            FragmentTab(TabType.HOME, HomeFragment()),
+            FragmentTab(TabType.PROFILE, ProfileFragment()),
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +38,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
+        binding.viewPager.apply {
+            adapter = MainPagerAdapter(supportFragmentManager)
+            offscreenPageLimit = max((adapter as MainPagerAdapter).count - 1, 1)
+        }
         binding.tab.apply {
-            TabType.values().forEachIndexed { index, tab ->
-                addTab(newTab())
-                getTabAt(index)?.also {
-                    it.setIcon(tab.icon)
-                    it.setText(tab.title)
-                }
-            }
+            setupWithViewPager(binding.viewPager)
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    handleTabSelected(tab.toTabType())
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -51,23 +57,28 @@ class MainActivity : BaseActivity() {
                     }
                 }
             })
-            handleTabSelected(TabType.HOME)
+            TabType.values().forEachIndexed { index, tab ->
+                getTabAt(index)?.also {
+                    it.setIcon(tab.icon)
+                    it.setText(tab.title)
+                }
+            }
         }
     }
 
-    private fun handleTabSelected(tabType: TabType?) {
-        when (tabType) {
-            TabType.HOME -> {
-                fragments[0]
-            }
-            TabType.PROFILE -> {
-                fragments[1]
-            }
-            else -> null
-        }?.let {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, it)
-                .commit()
+    inner class MainPagerAdapter(fm: FragmentManager)
+        : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getCount(): Int {
+            return fragmentTabs.size
+        }
+
+        override fun getItem(position: Int): Fragment {
+            return fragmentTabs[position].fragment
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return resources.getString(fragmentTabs[position].type.title)
         }
     }
 
@@ -81,4 +92,6 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
+    private data class FragmentTab(val type: TabType, val fragment: Fragment)
 }
